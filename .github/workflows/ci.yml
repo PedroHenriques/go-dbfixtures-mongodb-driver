@@ -1,0 +1,44 @@
+name: ci
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  push:
+    branches:
+      - 'main'
+
+env:
+  BASE_GO_VERSION: 1.19
+
+jobs:
+  linter-and-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go_version: [$BASE_GO_VERSION, "1.18", "1.17"]
+    name: Running on Go version ${{ matrix.go_version }}
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: Run linter
+        run: sh cli/lint.sh
+
+      - name: Run unit tests
+        run: sh cli/test.sh -b -gv ${{ matrix.go_version }}
+
+  test-coverage-report:
+    needs: [linter-and-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+
+      - name: Run unit test coverage
+        run: sh cli/coverage.sh -b -gv $BASE_GO_VERSION
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: "./coverage/coverage.lcov"
+          flag-name: "unit"

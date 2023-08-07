@@ -1,0 +1,13 @@
+name: cd
+on:
+  release:
+    types: [published]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+      
+      - name: List module
+        run: sh cli/list.sh --version ${{ github.event.release.tag_name }}
