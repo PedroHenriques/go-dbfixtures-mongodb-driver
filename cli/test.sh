@@ -36,4 +36,6 @@ if [ $WATCH -eq 1 ]; then
   DOCKER_FLAGS="-it"; # Can not be always added since these docker flags are not supported in Github actions
 fi
 
-docker run --rm $DOCKER_FLAGS -v "${PWD}/":"/usr/src/app/" go-dbfixtures-$GO_VERSION:latest /bin/sh -c "$CMD";
+docker network create tests || true;
+docker run --rm --network tests --name testmongo -p 127.0.0.1:27017:27017/tcp -d mongo:4 || true;
+docker run --rm --network tests $DOCKER_FLAGS -v "${PWD}/":"/usr/src/app/" go-dbfixtures-$GO_VERSION:latest /bin/sh -c "$CMD";

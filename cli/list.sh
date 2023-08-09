@@ -10,4 +10,4 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-docker run --rm -v "${PWD}/":"/usr/src/app/" golang:1.19-buster /bin/sh -c "GOPROXY=proxy.golang.org go list -m github.com/PedroHenriques/go-dbfixtures@${VERSION}";
+docker run --rm -v "${PWD}/":"/usr/src/app/" golang:1.20-buster /bin/sh -c "GOPROXY=proxy.golang.org go list -m github.com/PedroHenriques/go-dbfixtures@${VERSION}";
