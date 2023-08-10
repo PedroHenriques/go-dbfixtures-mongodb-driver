@@ -6,28 +6,17 @@ package driver
 import (
 	"context"
 
+	"github.com/PedroHenriques/go-dbfixtures/dbfixtures"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-// TODO: replace with an import of this interface from the core package.
-type IDriver interface {
-	// clears the specified "tables" of any content
-	Truncate(tableNames []string) error
-
-	// inserts the supplied "rows" into the specified "table"
-	InsertFixtures(tableName string, fixtures []interface{}) error
-
-	// cleanup and terminate the connection to the database
-	Close() error
-}
 
 /*
 New creates and returns an instance of the MongoDb fixtures driver.
 */
 func New(
 	mongoClient *mongo.Client, dbName string, dbOpts *options.DatabaseOptions,
-) IDriver {
+) dbfixtures.IDriver {
 	database := mongoClient.Database(dbName, dbOpts)
 
 	return &driver{

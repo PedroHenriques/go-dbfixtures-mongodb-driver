@@ -3,6 +3,7 @@ module github.com/PedroHenriques/go-dbfixtures-mongodb-driver
 go 1.17
 
 require (
+	github.com/PedroHenriques/go-dbfixtures v0.0.0-20230809153234-cc743de526a9
 	github.com/stretchr/testify v1.8.4
 	go.mongodb.org/mongo-driver v1.12.1
 )
